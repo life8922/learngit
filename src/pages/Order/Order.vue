@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
    <section class="order">
         <header class="header">
           <a class="header_title">
@@ -12,11 +11,6 @@
           <button>立即登陆</button>
         </section>
       </section>
-=======
-    <div>
-        Order
-    </div>
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </template>
 <script>
 export default{}
@@ -24,7 +18,6 @@ export default{}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-<<<<<<< HEAD
     .order  //订单
           width 100%
           .order_no_login
@@ -49,7 +42,4 @@ export default{}
               outline none
               border-radius 5px
               padding 10px 20px
-=======
-
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </style>

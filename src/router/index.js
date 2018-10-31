@@ -11,6 +11,10 @@ export default new VueRouter({
   // 所有路由
   routes: [
     {
+      path: '/',
+      component: Home
+    },
+    {
       path: '/home',
       component: Home
     },

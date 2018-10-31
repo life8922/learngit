@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
     <section class="msite">
         <!--首页头部-->
         <header class="header">
@@ -310,18 +309,12 @@
           </div>
         </div>
       </section>
-=======
-    <div>
-        Home
-    </div>
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </template>
 <script>
 export default{}
 
 </script>
 
-<<<<<<< HEAD
 <style lang="stylus" rel="stylesheet/stylus" scoped>
  @import "../../common/stylus/mixins.styl"
         .msite  //首页
@@ -565,8 +558,4 @@ export default{}
                           color #666
                         .segmentation
                           color #ccc
-=======
-<style lang="stylus" rel="stylesheet/stylus">
-
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </style>

@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
       <div>
       <section class="profile">
         <header class="header">
@@ -95,10 +94,6 @@
           </a>
         </section>
       </section>
-=======
-    <div>
-       Profile
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
     </div>
 </template>
 <script>
@@ -107,7 +102,6 @@ export default{}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-<<<<<<< HEAD
 @import "../../common/stylus/mixins.styl"
         .header
             background-color #02a774
@@ -419,7 +413,4 @@ export default{}
           >.iconfont
             font-size 20px
             color #999
-=======
-
->>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </style>
