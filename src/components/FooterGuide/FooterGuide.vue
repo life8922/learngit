@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <template>
   <div class="footer_guide">
@@ -37,10 +38,20 @@ export default {
     }
   }
 }
+=======
+<template>
+    <div>
+        FooterGuide
+    </div>
+</template>
+<script>
+export default{}
+>>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+<<<<<<< HEAD
  @import "../../common/stylus/mixins.styl"
   .footer_guide
     top-border-1px(#e4e4e4)
@@ -69,4 +80,7 @@ export default {
         margin-bottom 2px
         .iconfont
           font-size 22px
+=======
+
+>>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </style>

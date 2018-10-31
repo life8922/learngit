@@ -1,5 +1,6 @@
 <template>
     <div>
+<<<<<<< HEAD
     <section class="search">
         <header class="header">
           <a class="header_title">
@@ -11,6 +12,9 @@
           <input type="submit" name="submit" class="search_submit">
         </form>
       </section>
+=======
+       Search
+>>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
     </div>
 </template>
 <script>
@@ -19,6 +23,7 @@ export default{}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+<<<<<<< HEAD
    .header
             background-color #02a774
             position fixed
@@ -83,4 +88,7 @@ export default{}
                 font-size 16px
                 color #fff
                 background-color #02a774
+=======
+
+>>>>>>> c83caf0a1d54291f17a21219360918d8405ecac2
 </style>
