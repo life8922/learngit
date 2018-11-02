@@ -309,6 +309,8 @@
 </template>
 <script>
 import HearderTop from '../../components/HearderTop/HearderTop.vue'
+import Swiper from 'swiper'
+import 'swiper/dist/css/swiper.min.css'
 export default{
   data () {
     return {title: '昌平区北七家宏福科技园337省道北'}
