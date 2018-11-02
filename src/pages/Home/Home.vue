@@ -324,6 +324,7 @@ export default{
  @import "../../common/stylus/mixins.styl"
         .msite  //首页
           width 100%
+
           .msite_nav
             bottom-border-1px(#e4e4e4)
             margin-top 45px
