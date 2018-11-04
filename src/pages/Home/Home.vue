@@ -1,7 +1,7 @@
 <template>
     <section class="msite">
         <!--首页头部-->
-        <HearderTop :title="this.title">
+        <HearderTop :title="address.name">
            <span class="header_search" slot="left">
             <i class="iconfont icon-sousuo"></i>
           </span>
@@ -13,104 +13,12 @@
         <nav class="msite_nav">
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <a href="javascript:" class="link_to_food">
+              <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key="index">
+                <a href="javascript:" class="link_to_food" v-for="(category,index) in categorys" :key="index">
                   <div class="food_container">
-                    <img src="./images/nav/1.jpg">
+                    <img :src="baseImageUrl+category.image_url">
                   </div>
-                  <span>甜品饮品</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/2.jpg">
-                  </div>
-                  <span>商超便利</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/3.jpg">
-                  </div>
-                  <span>美食</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/4.jpg">
-                  </div>
-                  <span>简餐</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/5.jpg">
-                  </div>
-                  <span>新店特惠</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/6.jpg">
-                  </div>
-                  <span>准时达</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/7.jpg">
-                  </div>
-                  <span>预订早餐</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/8.jpg">
-                  </div>
-                  <span>土豪推荐</span>
-                </a>
-              </div>
-              <div class="swiper-slide">
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/9.jpg">
-                  </div>
-                  <span>甜品饮品</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/10.jpg">
-                  </div>
-                  <span>商超便利</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/11.jpg">
-                  </div>
-                  <span>美食</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/12.jpg">
-                  </div>
-                  <span>简餐</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/13.jpg">
-                  </div>
-                  <span>新店特惠</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/14.jpg">
-                  </div>
-                  <span>准时达</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/1.jpg">
-                  </div>
-                  <span>预订早餐</span>
-                </a>
-                <a href="javascript:" class="link_to_food">
-                  <div class="food_container">
-                    <img src="./images/nav/2.jpg">
-                  </div>
-                  <span>土豪推荐</span>
+                  <span>{{category.title}}</span>
                 </a>
               </div>
             </div>
@@ -129,25 +37,61 @@
       </section>
 </template>
 <script>
+import {mapState} from 'vuex'
 import HearderTop from '../../components/HearderTop/HearderTop.vue'
 import ShopList from '../../components/ShopList/ShopList.vue'
 import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.min.css'
 export default{
   data () {
-    return {title: '昌平区北七家宏福科技园337省道北'}
+    return {
+      baseImageUrl: 'https://fuss10.elemecdn.com'
+    }
   },
   mounted () {
-    /* eslint-disable no-new */
-    new Swiper('.swiper-container', {loop: true, // 循环轮播
-      pagination: {
-        el: '.swiper-pagination'
-      }
-    })
+    // this.$store.dispatch('getAddress')
+    this.$store.dispatch('getCategorys')
+    this.$store.dispatch('getShops')
+  },
+  watch: {
+    categorys (value) { // categorys里有数据了 在异步更新之前执行
+      /* eslint-disable no-new */
+      // setTimeout  //也可以 有弊端 在异步更新之前执行
+
+      // 界面更新  立即创建swiper对象
+      this.$nextTick(() => { // 一旦完成界面更新，立即调用（此语句要写在数据更新之后）
+        new Swiper('.swiper-container', {loop: true, // 循环轮播
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        })
+      })
+    }
   },
   components: {
     HearderTop,
     ShopList
+  },
+  computed: {
+    ...mapState(['address', 'categorys']),
+    // 小素组中的元素个数最大是8
+    /* eslint-disable*/
+    categorysArr () {
+      const {categorys} = this
+      const arr = []
+      let minArr = []
+      categorys.forEach(c => {
+        if (minArr.length === 8) {
+          minArr = []
+        }
+        if (minArr.length === 0) {
+            arr.push(minArr)
+        }
+        minArr.push(c)
+      })
+        return arr
+    }
+
   }
 }
 

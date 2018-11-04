@@ -3,14 +3,14 @@ import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS
-} from './mutations-type'
+} from './mutation-types'
 
 export default{
   [RECEIVE_ADDRESS] (state, {address}) {
     state.address = address
   },
   [RECEIVE_CATEGORYS] (state, {categorys}) {
-    state.categorysc = categorys
+    state.categorys = categorys
   },
 
   [RECEIVE_SHOPS] (state, {shops}) {
