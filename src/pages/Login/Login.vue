@@ -9,14 +9,14 @@
           </div>
         </div>
         <div class="login_content">
-          <form>
+          <form @submit.prevent="login">
             <div :class="{on:loginWay}">
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
                 <button :disabled="!rightPhone" class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode">{{computeTime>0?`以发送(${computeTime}s)`:'获取验证码'}}</button>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码">
+                <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
               </section>
               <section class="login_hint">
                 温馨提示：未注册东东外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -26,7 +26,7 @@
             <div :class="{on:!loginWay}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                  <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
                 </section>
                 <section class="login_verification">
                   <input type="text" maxlength="8" v-if="showPwd" placeholder="密码" v-model="pwd">
@@ -37,8 +37,8 @@
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha">
                 </section>
               </section>
             </div>
@@ -50,17 +50,26 @@
           <i class="iconfont icon-jiantou2"></i>
         </a>
       </div>
+      <AlertTip :alertText="alertText" v-show="showAlert" @closeTip="closeTip"></AlertTip>
     </section>
 </template>
 <script>
+import AlertTip from '../../components/AlertTip/AlertTip.vue'
+/* eslint-disable */
+import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
 export default {
   data () {
     return {
-      loginWay: true, // true代表短信登陆 ，false密码的行路
+      loginWay: false, // true代表短信登陆 ，false密码的行路
       computeTime: 0,
       showPwd: false, // 是否显示密码
       phone: '',
-      pwd: ''
+      code: '', // 短信验证码
+      pwd: '',
+      name: '', // 用户名
+      captcha: '', // 图形验证码
+      alertText: '',
+      showAlert: false // 是否显示提示框
     }
   },
   computed: {
@@ -69,21 +78,72 @@ export default {
     }
   },
   methods: {
-    getCode () {
+    // 异步获取短信验证码
+  async getCode () {
       // 倒计时
       // 如果当前没有几时
       if (!this.computeTime) {
         this.computeTime = 30
-        const timer = setInterval(() => {
+       this.timer = setInterval(() => {
           this.computeTime--
           if (this.computeTime === 0) {
-            clearInterval(timer)
+            clearInterval(this.timer)
           }
         }, 1000)
+        const result=await reqSendCode(this.phone)
+        if(result.code===1){
+          //显示提示
+            this.showAlert1(result.msg)
+          //停止倒计时
+          if(this.computeTime){
+            this.computeTime=0
+            clearInterval(this.timer)
+            this.timer=undefined;
+          }
+        }
       }
 
       // 发送ajax请求
+    },
+    showAlert1 (alertText) {
+      this.showAlert = true
+      this.alertText = alertText
+    },
+    login () {
+      /* eslint-disable */
+      if (this.loginWay) {
+        // 短信登陆
+        const {rightPhone, phone, code} = this
+        if(!this.rightPhone){
+            this.showAlert1('手机号不正确')
+        }else if(!/^\d{6}$/.test(code)){
+          //验证码必须是6位
+           this.showAlert1('验证码必须是6位')
+        }
+      } else {
+        const {name, pwd, captcha} = this
+        if(!this.name){
+          //用户名必须制定
+           this.showAlert1('用户名错误')
+        }else if(!this.pwd){
+             this.showAlert1('密码错误')
+        }else if(!this.captcha){
+             this.showAlert1('图形验证码错误')
+        }
+      }
+    },
+    getCaptcha(event){
+      //获取新的图片验证码   每次制定的src要不一样  ajax请求才跨域 这不是
+      event.target.src="http://localhost:4000/captcha?time="+Date.now()
+
+    },
+    closeTip(){
+      this.showAlert = false
+      this.alertText = ""
     }
+  },
+  components:{
+    AlertTip
   }
 }
 </script>
