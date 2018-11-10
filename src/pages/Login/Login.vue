@@ -38,7 +38,7 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha">
+                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha" ref="captcha">
                 </section>
               </section>
             </div>
@@ -60,7 +60,7 @@ import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
 export default {
   data () {
     return {
-      loginWay: false, // true代表短信登陆 ，false密码的行路
+      loginWay: false, // true代表短信登陆 ，false密码登陆
       computeTime: 0,
       showPwd: false, // 是否显示密码
       phone: '',
@@ -109,32 +109,67 @@ export default {
       this.showAlert = true
       this.alertText = alertText
     },
-    login () {
+    async login () {
+      let result
       /* eslint-disable */
       if (this.loginWay) {
         // 短信登陆
         const {rightPhone, phone, code} = this
         if(!this.rightPhone){
             this.showAlert1('手机号不正确')
+            return
         }else if(!/^\d{6}$/.test(code)){
           //验证码必须是6位
            this.showAlert1('验证码必须是6位')
+           return
         }
+       result=await reqSmsLogin(phone,code)
+        //if(result.code===0){
+          //const user=result.data
+        //}else{ const msg=result.msg}
       } else {
         const {name, pwd, captcha} = this
         if(!this.name){
           //用户名必须制定
-           this.showAlert1('用户名错误')
+           this.showAlert1('用名错误')
+           return
         }else if(!this.pwd){
              this.showAlert1('密码错误')
+             return
         }else if(!this.captcha){
              this.showAlert1('图形验证码错误')
+             return
         }
+       
+       result=await reqPwdLogin({name, pwd, captcha}) 
       }
+        if(this.computeTime){
+            this.computeTime=0
+            clearInterval(this.timer)
+            this.timer=undefined;
+          }
+      //根据结果处理
+      if(result.code==0){
+         console.log(this.name,this.pwd)
+          const user=result.data
+          console.log("欠他"+user)
+          //将user保存到vuex的state;
+          //this.$store.dispatch("recordUser",user)
+           this.$store.dispatch('recordUser', user)
+          //去个人中心页面
+          //this.$router.replace('/profile')
+        }else{ 
+          console.log(result.code)
+          const msg=result.msg
+          //显示新的图片验证码
+          this.getCaptcha()
+          this.showAlert1(msg)
+        }
     },
-    getCaptcha(event){
+    getCaptcha(){
       //获取新的图片验证码   每次制定的src要不一样  ajax请求才跨域 这不是
-      event.target.src="http://localhost:4000/captcha?time="+Date.now()
+      this.$refs.captcha.src="http://localhost:4000/captcha?time="+Date.now()
+      
 
     },
     closeTip(){
@@ -144,7 +179,10 @@ export default {
   },
   components:{
     AlertTip
-  }
+  },
+  created() {
+    console.log(this)
+  },
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus"  type="text/stylus">

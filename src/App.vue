@@ -1,25 +1,32 @@
 <template>
-  <div>
-    <router-view></router-view>
-    <footer-guide v-show="$route.meta.showFooter"></footer-guide>
+  <div id="app">
+    <router-view/>
+    <FooterGuide v-show="$route.meta.showFooter"/>
   </div>
 </template>
+
 <script>
 import {mapActions} from 'vuex'
 import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+
 export default {
+
   mounted () {
     // this.$store.dispatch('getAddress')
     this.getAddress()
+    this.getUserInfo()
   },
+
   methods: {
-    ...mapActions(['getAddress'])
+    ...mapActions(['getAddress', 'getUserInfo'])
   },
+
   components: {
     FooterGuide
   }
 }
 </script>
+
 <style lang="stylus" rel="stylesheet/stylus">
   .app
     width 100%

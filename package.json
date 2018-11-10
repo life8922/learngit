@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "css-loader": "^0.28.11",
+    "css-selector-tokenizer": "^0.7.1",
+    "fastparse": "^1.1.2",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "node-sass": "^4.9.4",
@@ -21,7 +23,8 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-style-loader": "^3.1.2",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "when": "^3.7.8"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
