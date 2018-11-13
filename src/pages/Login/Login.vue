@@ -36,10 +36,6 @@
                     <span class="switch_text">{{showPwd?"abc":"..."}}</span>
                   </div>
                 </section>
-                <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha" ref="captcha">
-                </section>
               </section>
             </div>
             <button class="login_submit">登录</button>
@@ -56,7 +52,7 @@
 <script>
 import AlertTip from '../../components/AlertTip/AlertTip.vue'
 /* eslint-disable */
-import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
+import {reqSendCode, reqSmsLogin, reqPwdLogin,reqcaptcha} from '../../api'
 export default {
   data () {
     return {
@@ -123,7 +119,7 @@ export default {
            this.showAlert1('验证码必须是6位')
            return
         }
-       result=await reqSmsLogin(phone,code)
+       result=await reqSmsLogin(phone,code,captcha)
         //if(result.code===0){
           //const user=result.data
         //}else{ const msg=result.msg}
@@ -136,12 +132,10 @@ export default {
         }else if(!this.pwd){
              this.showAlert1('密码错误')
              return
-        }else if(!this.captcha){
-             this.showAlert1('图形验证码错误')
-             return
         }
        
-       result=await reqPwdLogin({name, pwd, captcha}) 
+       result=await reqPwdLogin({name, pwd});
+   
       }
         if(this.computeTime){
             this.computeTime=0
@@ -152,12 +146,15 @@ export default {
       if(result.code==0){
          console.log(this.name,this.pwd)
           const user=result.data
-          console.log("欠他"+user)
+          console.log(result.data)
+
+          sessionStorage.setItem("name",result.data.name);
+          console.log("存"+sessionStorage.getItem('name'))
           //将user保存到vuex的state;
           //this.$store.dispatch("recordUser",user)
            this.$store.dispatch('recordUser', user)
           //去个人中心页面
-          //this.$router.replace('/profile')
+         this.$router.replace('/profile')
         }else{ 
           console.log(result.code)
           const msg=result.msg
@@ -181,7 +178,9 @@ export default {
     AlertTip
   },
   created() {
-    console.log(this)
+   
+    
+  
   },
 }
 </script>

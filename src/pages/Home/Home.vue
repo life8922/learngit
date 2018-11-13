@@ -6,7 +6,7 @@
             <i class="iconfont icon-sousuo"></i>
           </span>
           <span class="header_login" slot="right">
-            <span class="header_login_text">登录|注册</span>
+            <span class="header_login_text">{{names||"登录/注册"}}</span>
           </span>
         </HearderTop>
         <!--首页导航-->
@@ -46,7 +46,8 @@ import 'swiper/dist/css/swiper.min.css'
 export default{
   data () {
     return {
-      baseImageUrl: 'https://fuss10.elemecdn.com'
+      baseImageUrl: 'https://fuss10.elemecdn.com',
+      name: ''
     }
   },
   mounted () {
@@ -93,6 +94,11 @@ export default{
         return arr
     }
 
+  },
+  created () {
+    var name = sessionStorage.getItem('name')
+    this.names = name
+    console.log('geren' + name)
   }
 }
 
