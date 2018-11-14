@@ -3,17 +3,17 @@
       <section class="profile">
         <HearderTop title="我的外卖"/>
         <section class="profile-number">
-          <router-link to="/login" class="profile-link">
+          <router-link :to="this.codes?'/userInfo':'/login'" class="profile-link">
             <div class="profile_image">
               <i class="iconfont icon-person"></i>
             </div>
             <div class="user-info">
-              <p class="user-info-top">{{names||"登录/注册"}}</p>
+              <p class="user-info-top" v-if="!this.phones">{{this.names|| '登录/注册'}}</p>
               <p>
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-                <span class="icon-mobile-number">暂无绑定手机号</span>
+                <span class="icon-mobile-number">{{this.phones||"暂无绑定手机号"}}</span>
               </p>
             </div>
             <span class="arrow">
@@ -89,20 +89,45 @@
             </div>
           </a>
         </section>
+         <section class="profile_my_order border-1px">
+          <mt-button type="danger" style="width: 100%"  @click="logout">退出登陆</mt-button>
+         </section>
       </section>
     </div>
 </template>
 <script>
 import {mapState} from 'vuex'
 import HearderTop from '../../components/HearderTop/HearderTop.vue'
+import { MessageBox, Toast } from 'mint-ui'
 export default{
   data () {
     return {
-      names: ''
+      names: '',
+      phones: '',
+      codes: ''
+    }
+  },
+  methods: {
+    logout () {
+      MessageBox.confirm('确认退出吗?').then(
+        action => {
+          // 请求退出
+          sessionStorage.clear()
+          this.names = ''
+          this.phones = ''
+          Toast('登出完成')
+          // history.go(0)
+        },
+        action => {
+          console.log('点击了取消')
+        }
+      )
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState({
+      names1: 'userInfo'
+    })
   },
   components: {
     HearderTop
@@ -110,14 +135,20 @@ export default{
   created () {
     var name = sessionStorage.getItem('name')
     this.names = name
-    console.log('geren' + name)
+    var code = sessionStorage.getItem('code')
+    this.codes = code
+    // console.log('geren' + name)
+    this.phones = sessionStorage.getItem('phone')
+  },
+  updated () {
+
   }
 }
 
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import "../../common/stylus/mixins.styl"
+  @import "../../common/stylus/mixins.styl"
   .profile //我的
     width 100%
     overflow hidden

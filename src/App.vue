@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 import FooterGuide from './components/FooterGuide/FooterGuide.vue'
 
 export default {
@@ -17,11 +17,20 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getAddress', 'getUserInfo'])
+    ...mapActions(['getAddress', 'getUserInfo']),
+    ...mapMutations(['changeName'])
   },
 
   components: {
     FooterGuide
+  },
+  created () {
+
+  },
+  updated () {
+    var userInfo = sessionStorage.getItem('name')
+    console.log('ahha' + userInfo)
+    this.changeName(userInfo)
   }
 }
 </script>

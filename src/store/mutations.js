@@ -19,6 +19,9 @@ export default{
   },
   [RECEIVE_USER_INFO] (state, {userInfo}) {
     state.userInfo = userInfo
+  },
+  changeName (state, userInfo) {
+    state.userInfo = userInfo
   }
 
 }

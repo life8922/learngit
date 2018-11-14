@@ -2,11 +2,11 @@
     <section class="msite">
         <!--首页头部-->
         <HearderTop :title="address.name">
-           <span class="header_search" slot="left">
+           <router-link class="header_search" slot="left" to="/search">
             <i class="iconfont icon-sousuo"></i>
-          </span>
+          </router-link >
           <span class="header_login" slot="right">
-            <span class="header_login_text">{{names||"登录/注册"}}</span>
+            <span class="header_login_text">东东</span>
           </span>
         </HearderTop>
         <!--首页导航-->
@@ -46,8 +46,8 @@ import 'swiper/dist/css/swiper.min.css'
 export default{
   data () {
     return {
-      baseImageUrl: 'https://fuss10.elemecdn.com',
-      name: ''
+      baseImageUrl: 'https://fuss10.elemecdn.com'
+
     }
   },
   mounted () {
@@ -75,7 +75,7 @@ export default{
     ShopList
   },
   computed: {
-    ...mapState(['address', 'categorys']),
+    ...mapState(['address', 'categorys', 'userInfo']),
     // 小素组中的元素个数最大是8
     /* eslint-disable*/
     categorysArr () {
@@ -92,13 +92,12 @@ export default{
         minArr.push(c)
       })
         return arr
-    }
+    },
+     
 
   },
   created () {
-    var name = sessionStorage.getItem('name')
-    this.names = name
-    console.log('geren' + name)
+   
   }
 }
 

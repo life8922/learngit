@@ -53,14 +53,16 @@
 import AlertTip from '../../components/AlertTip/AlertTip.vue'
 /* eslint-disable */
 import {reqSendCode, reqSmsLogin, reqPwdLogin,reqcaptcha} from '../../api'
+import {mapState,mapMutations} from 'vuex'
 export default {
   data () {
     return {
-      loginWay: false, // true代表短信登陆 ，false密码登陆
+      loginWay: true, // true代表短信登陆 ，false密码登陆
       computeTime: 0,
       showPwd: false, // 是否显示密码
       phone: '',
       code: '', // 短信验证码
+      codes: '', // session短信验证码
       pwd: '',
       name: '', // 用户名
       captcha: '', // 图形验证码
@@ -74,6 +76,7 @@ export default {
     }
   },
   methods: {
+     ...mapMutations(['changeName']),
     // 异步获取短信验证码
   async getCode () {
       // 倒计时
@@ -87,8 +90,12 @@ export default {
           }
         }, 1000)
         const result=await reqSendCode(this.phone)
-        if(result.code===1){
+        if(result.code===0){
           //显示提示
+          console.log(result)
+          sessionStorage.setItem("code",result.msg);
+          console.log(sessionStorage.getItem('code'))
+          this.codes=sessionStorage.getItem('code')
             this.showAlert1(result.msg)
           //停止倒计时
           if(this.computeTime){
@@ -119,11 +126,18 @@ export default {
            this.showAlert1('验证码必须是6位')
            return
         }
-       result=await reqSmsLogin(phone,code,captcha)
+       //result=await reqSmsLogin(phone,code)
+       result=this.codes
+       if(this.codes==this.code){ 
+         sessionStorage.setItem("phone",this.phone);
+         this.$router.replace('/profile')}
+       else{return console.log("大错误")}
         //if(result.code===0){
           //const user=result.data
-        //}else{ const msg=result.msg}
-      } else {
+          //console.log(result)}
+         //else{ const msg=result.msg}
+         } 
+      else {
         const {name, pwd, captcha} = this
         if(!this.name){
           //用户名必须制定
@@ -144,30 +158,32 @@ export default {
           }
       //根据结果处理
       if(result.code==0){
-         console.log(this.name,this.pwd)
+         //console.log(this.name,this.pwd)
           const user=result.data
-          console.log(result.data)
-
+          console.log("处理结果")
+          console.log(result.data.name)
+          console.log(result.code)
           sessionStorage.setItem("name",result.data.name);
-          console.log("存"+sessionStorage.getItem('name'))
+          sessionStorage.setItem("code",result.code);
+          console.log(sessionStorage.getItem('name'))
           //将user保存到vuex的state;
           //this.$store.dispatch("recordUser",user)
-           this.$store.dispatch('recordUser', user)
+           //this.$store.dispatch('recordUser', user)
+           
           //去个人中心页面
          this.$router.replace('/profile')
+         
+
+           
+
+
         }else{ 
           console.log(result.code)
           const msg=result.msg
           //显示新的图片验证码
-          this.getCaptcha()
+          
           this.showAlert1(msg)
         }
-    },
-    getCaptcha(){
-      //获取新的图片验证码   每次制定的src要不一样  ajax请求才跨域 这不是
-      this.$refs.captcha.src="http://localhost:4000/captcha?time="+Date.now()
-      
-
     },
     closeTip(){
       this.showAlert = false
@@ -178,7 +194,8 @@ export default {
     AlertTip
   },
   created() {
-   
+
+  
     
   
   },
