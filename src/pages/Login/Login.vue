@@ -96,7 +96,7 @@ export default {
           sessionStorage.setItem("code",result.msg);
           console.log(sessionStorage.getItem('code'))
           this.codes=sessionStorage.getItem('code')
-            this.showAlert1(result.msg)
+            this.showAlert1("请输入验证码")
           //停止倒计时
           if(this.computeTime){
             this.computeTime=0
@@ -128,6 +128,7 @@ export default {
         }
        //result=await reqSmsLogin(phone,code)
        result=this.codes
+
        if(this.codes==this.code){ 
          sessionStorage.setItem("phone",this.phone);
          this.$router.replace('/profile')}

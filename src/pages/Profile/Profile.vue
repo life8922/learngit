@@ -89,7 +89,7 @@
             </div>
           </a>
         </section>
-         <section class="profile_my_order border-1px">
+         <section class="profile_my_order border-1px" v-if="codes">
           <mt-button type="danger" style="width: 100%"  @click="logout">退出登陆</mt-button>
          </section>
       </section>
@@ -115,6 +115,7 @@ export default{
           sessionStorage.clear()
           this.names = ''
           this.phones = ''
+          this.codes = ''
           Toast('登出完成')
           // history.go(0)
         },
@@ -137,7 +138,7 @@ export default{
     this.names = name
     var code = sessionStorage.getItem('code')
     this.codes = code
-    // console.log('geren' + name)
+    console.log(code)
     this.phones = sessionStorage.getItem('phone')
   },
   updated () {
