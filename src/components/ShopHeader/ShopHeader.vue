@@ -5,43 +5,44 @@
         <i class="iconfont icon-arrow_left"></i>
       </a>
     </nav>
-    <div class="shop-content" >
-      <img class="content-image" >
+    <div class="shop-content" @click="toggleShopShow" >
+      <img class="content-image" :src="info.avatar">
       <div class="header-content">
         <h2 class="content-title">
           <span class="content-tag">
             <span class="mini-tag">品牌</span>
           </span>
-          <span class="content-name"></span>
+          <span class="content-name">{{info.name}}</span>
           <i class="content-icon"></i>
         </h2>
         <div class="shop-message">
-          <span class="shop-message-detail"></span>
-          <span class="shop-message-detail"></span>
+          <span class="shop-message-detail">{{info.score}}</span>
+          <span class="shop-message-detail">{{info.sellCount}}单</span>
           <span class="shop-message-detail">
-            <span></span>
+            {{info.description}}
+            <span>约{{info.deliveryTime}}分钟</span>
           </span>
-          <span class="shop-message-detail"></span>
+          <span class="shop-message-detail">距离{{info.distance}}</span>
         </div>
       </div>
     </div>
 
-    <div class="shop-header-discounts" >
+    <div class="shop-header-discounts" v-if="info.supports" @click="toggleSupportShow">
       <div class="discounts-left">
-        <div class="activity">
+        <div class="activity" :class="supportClasses[info.supports[0].type]">
           <span class="content-tag">
-            <span class="mini-tag"></span>
+            <span class="mini-tag">{{info.supports[0].name}}</span>
           </span>
-          <span class="activity-content ellipsis"></span>
+          <span class="activity-content ellipsis">{{info.supports[0].content}}</span>
         </div>
       </div>
       <div class="discounts-right">
-
+        {{info.supports.length}}个优惠
       </div>
     </div>
 
-    <transition name="fade" v-if="false">
-      <div class="shop-brief-modal" >
+    <transition name="fade" >
+      <div class="shop-brief-modal" v-show="shopShow" >
         <div class="brief-modal-content">
           <h2 class="content-title">
           <span class="content-tag">
@@ -77,7 +78,7 @@
           <div class="brief-modal-notice">
 
           </div>
-          <div class="mask-footer" >
+          <div class="mask-footer" @click="toggleShopShow">
             <span class="iconfont icon-close"></span>
           </div>
         </div>
@@ -85,8 +86,8 @@
       </div>
     </transition>
 
-    <transition name="fade" v-if="false">
-      <div class="activity-sheet" >
+    <transition name="fade" >
+      <div class="activity-sheet" v-show="supportShow" >
         <div class="activity-sheet-content">
           <h2 class="activity-sheet-title">优惠活动</h2>
           <ul class="list">
@@ -97,7 +98,7 @@
               <span class="activity-content"></span>
             </li>
           </ul>
-          <div class="activity-sheet-close" >
+          <div class="activity-sheet-close" @click="toggleSupportShow" >
             <span class="iconfont icon-close"></span>
           </div>
         </div>
@@ -324,7 +325,7 @@ export default {
       flex-direction column
       color #333
       &.fade-enter-active,&.fade-leave-active
-        transition opacity .5s
+        transition opacity 2s
       &.fade-enter,&.fade-leave-to
         opacity 0
       .brief-modal-cover
@@ -429,6 +430,10 @@ export default {
       width 100%
       height 100%
       z-index 99
+      &.fade-enter-active,&.fade-leave-active
+        transition opacity 2s
+      &.fade-enter,&.fade-leave-to
+        opacity 0
       .activity-sheet-content
         position absolute
         background-color #f5f5f5
