@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "assert-plus": "^1.0.0",
+    "better-scroll": "^1.13.2",
     "css-loader": "^0.28.11",
     "css-selector-tokenizer": "^0.7.1",
     "fastparse": "^1.1.2",

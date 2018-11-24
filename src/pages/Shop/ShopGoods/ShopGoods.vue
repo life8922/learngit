@@ -4,7 +4,7 @@
       <div class="menu-wrapper">
         <ul>
           <!--current-->
-          <li class="menu-item" v-for="(good,index) in goods" :key="index">
+          <li class="menu-item" v-for="(good,index) in goods" :key="index" >
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -22,18 +22,18 @@
                   <img width="57" height="57" :src="food.icon">
                 </div>
                 <div class="content">
-                  <h2 class="name"></h2>
-                  <p class="desc"></p>
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
                   <div class="extra">
-                    <span class="count">月售份</span>
-                    <span>好评率%</span>
+                    <span class="count">月售{{food.sellCount}}份</span>
+                    <span>好评率{{food.rating}}%</span>
                   </div>
                   <div class="price">
-                    <span class="now">￥</span>
-                    <span class="old"></span>
+                    <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-
+                      cartcontrol
                   </div>
                 </div>
               </li>
@@ -46,7 +46,10 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll'
+
 import {mapState} from 'vuex'
+
 export default {
   data () {
     return {
@@ -56,10 +59,27 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('getShopGoods')
+    this.$store.dispatch('getShopGoods', () => {
+      this.$nextTick(() => { // 数据更新之后执行
+        /* eslint-disable */
+        new BScroll('.menu-wrapper',{
+
+        })
+        const foodScroll=new BScroll('.foods-wrapper',{
+          probeType:2 //因为惯性滑动不会触发
+        })
+        //给右侧列表绑定scroll监听
+        foodScroll.on("scroll",({x,y})=>{
+            console.log(x,y)
+            this.scrollY=Math.abs(y)
+        })
+      })
+    })// 异步获取数据
+    // 列表显示之后创建
   },
   computed: {
-    ...mapState(['goods'])
+    ...mapState(['goods']),
+    currentIndex () {}
   }
 }
 </script>
