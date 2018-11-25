@@ -8,5 +8,6 @@ export default{
   userInfo: defaultCity, // 用户信息
   goods: [],
   ratings: [],
-  info: {}
+  info: {},
+  cartFoods: []
 }

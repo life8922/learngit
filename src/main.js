@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 import './mock/mockServer' // 加载mockServer即可
 import VueResource from 'vue-resource'
-
+import '../static/iconfont.css'
 Vue.use(VueResource)
 Vue.component(Button.name, Button)
 
