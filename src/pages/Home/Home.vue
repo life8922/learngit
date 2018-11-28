@@ -97,7 +97,8 @@ export default{
 
   },
   created () {
-   
+      //const {categorys} = this
+   //console.log(categorys)
   }
 }
 
