@@ -61,7 +61,7 @@ export default{
                 color #fff
           .search_form
             clearFix()
-            margin-top 45px
+            margin-top 44px
             background-color #fff
             padding 12px 8px
             input

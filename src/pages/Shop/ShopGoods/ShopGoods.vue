@@ -72,7 +72,7 @@ export default {
     // 列表显示之后创建
     })
   },
-  computed: {// 初始执行一次 数据变化时候执行
+  computed: {// 初始执行一次 相关数据变化时候执行  这个 computed属性
     ...mapState(['goods']),
     /* eslint-disable */
     //计算得到当前分类的下标
@@ -93,7 +93,7 @@ export default {
     _initScroll () {
       /* eslint-disable */
         new BScroll('.menu-wrapper',{
-          //click:true
+          click:true
         })
         this.foodScroll=new BScroll('.foods-wrapper',{
           probeType:2 //因为惯性滑动不会触发
@@ -117,7 +117,7 @@ export default {
       //收集
         //找到所有分类的li 右边
       //const lis=this.$refs.foodsUl.getElementsByClassName('food-list-hook')
-       const lis=this.$refs.foodsUl.children
+       const lis=this.$refs.foodsUl.children  //伪类数组
        Array.prototype.slice.call(lis).forEach(li=>{
          top+=li.clientHeight //视口大小 文档大小
          tops.push(top)
@@ -130,7 +130,12 @@ export default {
       //console.log(index)
       //先得到目标位置
       //const y=this.tops[index]
+      //const y=this.tops[index]
+      //const y=this.tops[index]
+      //const y=this.tops[index]
       //this.scrollY=y
+      //const y=this.tops[index]
+      //const y=this.tops[index]
       const scrollY=this.tops[index]
       //立即更新scrollY(点击的分类 项目成为当前分类)
       this.scrollY=scrollY
