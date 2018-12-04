@@ -7,7 +7,7 @@
             <div class="profile_image">
               <i class="iconfont icon-person"></i>
             </div>
-            <div class="user-info">
+            <div class="user-info" style="">
               <p class="user-info-top" v-if="!this.phones">{{this.names|| '登录/注册'}}</p>
               <p>
                 <span class="user-icon">
@@ -20,6 +20,7 @@
               <i class="iconfont icon-jiantou1"></i>
             </span>
           </router-link>
+          <div :class="{mask:this.phones||this.names}" ></div>
         </section>
         <section class="profile_info_data border-1px">
           <ul class="info_data_list">
@@ -194,12 +195,21 @@ export default{
           color #fff
     .profile-number
       margin-top 45.5px
+      position:relative
       .profile-link
         clearFix()
         position relative
         display block
         background #02a774
         padding 20px 10px
+      .mask
+          position:absolute
+          left:0
+          top:0
+          background: rgba(0,0,0,.05)
+          height:100px
+          width:100%
+          z-index:1000 
         .profile_image
           float left
           width 60px
@@ -320,4 +330,6 @@ export default{
             .icon-jiantou1
               color #bbb
               font-size 10px
+      
+        
 </style>
